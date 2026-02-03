@@ -1,0 +1,56 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+}
+
+#calcBody {
+    height: 560px;
+    width: 350px;
+    padding: 20px;
+    border-style: solid;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.switch {
+    height: 25px;
+    width: 50px;
+    border-style: solid;
+}
+
+#screen {
+    width: 337px;
+    height: 90px;
+    padding: 20px;
+    border-style: solid;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+#buttonContainer {
+    height: 350px;
+    width: 340px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    gap: 15px;
+}
+
+button {
+    height: 65px;
+    width: 65px;
+}
