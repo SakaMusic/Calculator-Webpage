@@ -20,7 +20,7 @@ buttonContainer.addEventListener('click', (event) => {
         getNum(button);
         console.log(numString);
     } else if (button.id == 'equal') {
-        if (previousNum != null) {
+        if (previousNum != null && numString.length != 0) {
             let result = operate(operations[currentOp], previousNum, Number(numString))
             console.log(result);
         }
