@@ -20,8 +20,11 @@ buttonContainer.addEventListener('click', (event) => {
         getNum(button);
         console.log(numString);
     } else if (button.id == 'equal') {
-        let result = operate(operations[currentOp], previousNum, Number(numString))
-        console.log(result);
+        if (previousNum != null) {
+            let result = operate(operations[currentOp], previousNum, Number(numString))
+            console.log(result);
+        }
+        
     } else if (button.classList.contains('op-button')) {
         getOp(button)
         console.log(currentOp)
