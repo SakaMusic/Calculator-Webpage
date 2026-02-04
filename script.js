@@ -32,6 +32,8 @@ buttonContainer.addEventListener('click', (event) => {
         negate();
     } else if (button.id == 'clear') {
         clearAll();
+    } else if (button.id == 'delete') {
+        deleteNum();
     }
 })
 
@@ -80,8 +82,17 @@ function getOp(button) {
     numString = "";
 }
 
-function clearAll(){
+function clearAll() {
      numString = "";
      previousNum = null;
      currentOp = null;
+}
+
+function deleteNum() {
+    if (numString.length != 0) {
+        numString = numString.slice(0, -1);
+        if (numString.length === 1 && numString[0] == '-') {
+            numString = numString.slice(0, -1);
+        }
+    }
 }
