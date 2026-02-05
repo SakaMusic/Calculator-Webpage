@@ -10,6 +10,7 @@ let numString = "";
 let previousNum = null;
 let currentOp = null;
 let justCalculated = false;
+let lastInputIsOp = false;
 
 const screen = document.querySelector('#screen');
 const buttonContainer = document.querySelector('#buttonContainer');
@@ -17,27 +18,11 @@ const buttonContainer = document.querySelector('#buttonContainer');
 buttonContainer.addEventListener('click', (event) => {
     const button = event.target;
     if (button.classList.contains('num-button')) {
-        getNum(button);
-        console.log(numString);
+        handleNumberInput(button.textContent);
     } else if (button.id == 'equal') {
-        if (previousNum != null && numString.length != 0) {
-            justCalculated = true;
-            previousNum = operate(operations[currentOp], previousNum, Number(numString))
-            if (previousNum == 'Error') {
-                justCalculated = false;
-                numString = ''
-                previousNum = null;
-                screen.textContent = "Woah buddy, let's not break the rules of reality!";
-                return;
-            }
-            console.log(previousNum);
-            currentOp = null;
-            numString = String(previousNum);
-        }
-        
+        handleEquals()    
     } else if (button.classList.contains('op-button')) {
-        getOp(button)
-        console.log(currentOp)
+        handleOperator(button.textContent);
     } else if (button.id == 'negate') {
         negate();
     } else if (button.id == 'clear') {
@@ -47,7 +32,7 @@ buttonContainer.addEventListener('click', (event) => {
     } else if (button.id == 'decimal') {
         addDecimal()
     }
-        updateDisplay(button);
+        updateDisplay();
     
 })
 
@@ -80,6 +65,7 @@ function exponentiate(a, b) {
 }
 
 function negate() {
+    lastInputIsOp = false;
     justCalculated = false;
     if (numString.length === 0) {
         return;
@@ -88,25 +74,27 @@ function negate() {
     console.log(numString);
 }
 
-function getNum(button) {
+function getNum(value) {
+    lastInputIsOp = false;
     if (justCalculated) {
-        numString = button.textContent;
+        numString = value;
         justCalculated = false;
     } else {
-        numString += button.textContent;
+        numString += value;
     }
     
 }
 
-function getOp(button) {
+function getOp(value) {
     if (currentOp != null && previousNum != null) {
         previousNum = operate(operations[currentOp], previousNum, Number(numString));
     } else if (!justCalculated) {
         previousNum = Number(numString);
     }
-    currentOp = button.textContent;
+    currentOp = value
     numString = "";
     justCalculated = false;
+    lastInputIsOp = true;
     
 }
 
@@ -117,6 +105,7 @@ function clearAll() {
 }
 
 function deleteNum() {
+    lastInputIsOp = false;
     justCalculated = false;
     if (numString.length != 0) {
         numString = numString.slice(0, -1);
@@ -128,6 +117,7 @@ function deleteNum() {
 }
 
 function addDecimal() {
+    lastInputIsOp = false;
     justCalculated = false;
     if (numString.includes('.')) {
         return
@@ -139,11 +129,35 @@ function addDecimal() {
     console.log(numString);
 }
 
-function updateDisplay(button) {
-    if (previousNum != null && button.classList.contains('op-button')) {
+function updateDisplay() {
+    if (previousNum != null && lastInputIsOp) {
         screen.textContent = previousNum;
     } else {
         screen.textContent = numString;
-    }
-    
+    } 
+}
+
+function handleNumberInput(value) {
+    getNum(value);
+}
+
+function handleOperator(value) {
+    getOp(value);
+}
+
+function handleEquals() {
+    if (previousNum != null && numString.length != 0) {
+            justCalculated = true;
+            previousNum = operate(operations[currentOp], previousNum, Number(numString))
+            if (previousNum == 'Error') {
+                justCalculated = false;
+                numString = ''
+                previousNum = null;
+                screen.textContent = "Woah buddy, let's not break the rules of reality!";
+                return;
+            }
+            console.log(previousNum);
+            currentOp = null;
+            numString = String(previousNum);
+        }
 }
