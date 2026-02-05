@@ -34,6 +34,8 @@ buttonContainer.addEventListener('click', (event) => {
         clearAll();
     } else if (button.id == 'delete') {
         deleteNum();
+    } else if (button.id == 'decimal') {
+        addDecimal()
     }
 })
 
@@ -94,5 +96,15 @@ function deleteNum() {
         if (numString.length === 1 && numString[0] == '-') {
             numString = numString.slice(0, -1);
         }
+    }
+}
+
+function addDecimal() {
+    if (numString.includes('.')) {
+        return
+    } else if (numString.length === 0) {
+        numString += '0.';
+    } else {
+        numString += '.';
     }
 }
