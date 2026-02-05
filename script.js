@@ -11,7 +11,7 @@ let previousNum = null;
 let currentOp = null;
 let justCalculated = false;
 
-
+const screen = document.querySelector('#screen');
 const buttonContainer = document.querySelector('#buttonContainer');
 
 buttonContainer.addEventListener('click', (event) => {
@@ -23,9 +23,16 @@ buttonContainer.addEventListener('click', (event) => {
         if (previousNum != null && numString.length != 0) {
             justCalculated = true;
             previousNum = operate(operations[currentOp], previousNum, Number(numString))
+            if (previousNum == 'Error') {
+                justCalculated = false;
+                numString = ''
+                previousNum = null;
+                screen.textContent = "Woah buddy, let's not break the rules of reality!";
+                return;
+            }
             console.log(previousNum);
             currentOp = null;
-            numString = '';
+            numString = String(previousNum);
         }
         
     } else if (button.classList.contains('op-button')) {
@@ -40,6 +47,8 @@ buttonContainer.addEventListener('click', (event) => {
     } else if (button.id == 'decimal') {
         addDecimal()
     }
+        updateDisplay(button);
+    
 })
 
 function operate(func, a, b) {
@@ -59,6 +68,10 @@ function multiply(a, b) {
 }
 
 function divide(a, b) {
+    if (b === 0) {
+        console.log("Let's not break reality, please.")
+        return 'Error';
+    }
     return a / b;
 }
 
@@ -67,6 +80,7 @@ function exponentiate(a, b) {
 }
 
 function negate() {
+    justCalculated = false;
     if (numString.length === 0) {
         return;
     }
@@ -93,6 +107,7 @@ function getOp(button) {
     currentOp = button.textContent;
     numString = "";
     justCalculated = false;
+    
 }
 
 function clearAll() {
@@ -102,6 +117,7 @@ function clearAll() {
 }
 
 function deleteNum() {
+    justCalculated = false;
     if (numString.length != 0) {
         numString = numString.slice(0, -1);
         if (numString.length === 1 && numString[0] == '-') {
@@ -112,6 +128,7 @@ function deleteNum() {
 }
 
 function addDecimal() {
+    justCalculated = false;
     if (numString.includes('.')) {
         return
     } else if (numString.length === 0) {
@@ -120,4 +137,13 @@ function addDecimal() {
         numString += '.';
     }
     console.log(numString);
+}
+
+function updateDisplay(button) {
+    if (previousNum != null && button.classList.contains('op-button')) {
+        screen.textContent = previousNum;
+    } else {
+        screen.textContent = numString;
+    }
+    
 }
