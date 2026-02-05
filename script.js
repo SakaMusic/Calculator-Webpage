@@ -9,7 +9,7 @@ const operations = {
 let numString = "";
 let previousNum = null;
 let currentOp = null;
-
+let justCalculated = false;
 
 
 const buttonContainer = document.querySelector('#buttonContainer');
@@ -21,8 +21,11 @@ buttonContainer.addEventListener('click', (event) => {
         console.log(numString);
     } else if (button.id == 'equal') {
         if (previousNum != null && numString.length != 0) {
-            let result = operate(operations[currentOp], previousNum, Number(numString))
-            console.log(result);
+            justCalculated = true;
+            previousNum = operate(operations[currentOp], previousNum, Number(numString))
+            console.log(previousNum);
+            currentOp = null;
+            numString = '';
         }
         
     } else if (button.classList.contains('op-button')) {
@@ -68,20 +71,28 @@ function negate() {
         return;
     }
     numString = String(Number(numString * -1));
+    console.log(numString);
 }
 
 function getNum(button) {
-    numString += button.textContent;
+    if (justCalculated) {
+        numString = button.textContent;
+        justCalculated = false;
+    } else {
+        numString += button.textContent;
+    }
+    
 }
 
 function getOp(button) {
     if (currentOp != null && previousNum != null) {
         previousNum = operate(operations[currentOp], previousNum, Number(numString));
-    } else {
+    } else if (!justCalculated) {
         previousNum = Number(numString);
     }
     currentOp = button.textContent;
     numString = "";
+    justCalculated = false;
 }
 
 function clearAll() {
@@ -97,6 +108,7 @@ function deleteNum() {
             numString = numString.slice(0, -1);
         }
     }
+    console.log(numString);
 }
 
 function addDecimal() {
@@ -107,4 +119,5 @@ function addDecimal() {
     } else {
         numString += '.';
     }
+    console.log(numString);
 }
