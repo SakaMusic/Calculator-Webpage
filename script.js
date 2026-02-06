@@ -15,6 +15,30 @@ let lastInputIsOp = false;
 const screen = document.querySelector('#screen');
 const buttonContainer = document.querySelector('#buttonContainer');
 
+document.addEventListener('keydown', (event) => {
+    const key = event.key;
+    console.log('key pressed', key);
+
+    if (key >= '0' && key <= '9') {
+        handleNumberInput(key);
+    } else if (key === '+' || key === '-') {
+        handleOperator(key);
+    } else if (key === '*') {
+        handleOperator('x');
+    } else if (key === '/') {
+        handleOperator('÷')
+    } else if (key === '.') {
+        addDecimal();
+    } else if (key === 'Backspace') {
+        deleteNum();
+    } else if (key === 'Escape') {
+        clearAll();
+    } else if (key === 'Enter') {
+        handleEquals();
+    }
+    updateDisplay();
+})
+
 buttonContainer.addEventListener('click', (event) => {
     const button = event.target;
     if (button.classList.contains('num-button')) {
