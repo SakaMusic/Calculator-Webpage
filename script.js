@@ -1,11 +1,11 @@
-const operations = {
+const operations = { //operations dictionary
     '+': add,
     '-': subtract,
     'x': multiply,
     '÷': divide,
     '^': exponentiate,
 }
-
+//global variables to handle state change
 let numString = "";
 let previousNum = null;
 let currentOp = null;
@@ -15,6 +15,7 @@ let lastInputIsOp = false;
 const screen = document.querySelector('#screen');
 const buttonContainer = document.querySelector('#buttonContainer');
 
+// handle key inputs to calculator
 document.addEventListener('keydown', (event) => {
     const key = event.key;
     console.log('key pressed', key);
@@ -39,6 +40,7 @@ document.addEventListener('keydown', (event) => {
     updateDisplay();
 })
 
+// handle mouse click events on buttons
 buttonContainer.addEventListener('click', (event) => {
     const button = event.target;
     if (button.classList.contains('num-button')) {
@@ -60,6 +62,7 @@ buttonContainer.addEventListener('click', (event) => {
     
 })
 
+// operator functions
 function operate(func, a, b) {
     return func(a, b);
 }
@@ -78,7 +81,6 @@ function multiply(a, b) {
 
 function divide(a, b) {
     if (b === 0) {
-        console.log("Let's not break reality, please.")
         return 'Error';
     }
     return a / b;
@@ -87,7 +89,7 @@ function divide(a, b) {
 function exponentiate(a, b) {
     return a ** b;
 }
-
+// function to negate current operand
 function negate() {
     lastInputIsOp = false;
     justCalculated = false;
@@ -168,7 +170,7 @@ function handleNumberInput(value) {
 function handleOperator(value) {
     getOp(value);
 }
-
+// equals is a special case, only evaluates expression, resets global variables
 function handleEquals() {
     if (previousNum != null && numString.length != 0) {
             justCalculated = true;
